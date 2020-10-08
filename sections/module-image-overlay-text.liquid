@@ -1,0 +1,153 @@
+<style>
+    .section--{{ section.id }} .container {
+        padding: 0;
+    }
+    .section--{{ section.id }} .u-bg-overlay::before {
+        opacity: 0;
+    }
+    .section--{{ section.id }} .section__title {
+        max-width: 100%;
+    }
+    .section--{{ section.id }} .section__title .section__title-text {
+        text-transform: unset;
+        font-style: italic;
+    }
+    .section--{{ section.id }} .section__title-text::after {
+        width: 0 !important;
+    }
+    .section--{{ section.id }} .section__title .section__title-text, .section--{{ section.id }} .home-intro__text {
+        color: {{section.settings.color}};
+    }
+    .section--{{ section.id }} .overaly-link {
+        text-decoration: underline;
+        margin-top: 10px;
+    }
+</style>
+<section class="section section--{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="home-intro">
+    <div class="container">
+        
+        <div class="u-flex-parent">
+            <div class="home-intro home-intro--{{ section.settings.section_height }} u-flex u-flex--middle">
+
+                {% if section.settings.bg_image != blank %}
+                    <div class="home-intro__bg--cover u-bg-contain u-bg-overlay u-bg-overlay--white" style="background-image: url('{{ section.settings.bg_image | img_url: '1x1' }}')"></div>
+                    <div class="home-intro__bg home-intro__bg--{{ section.id }} u-bg-cover u-bg-overlay u-bg-overlay--white img-lazyload lazyload js"
+                        data-bgset="{% render 'bgset', image: section.settings.bg_image %}"
+                        data-sizes="auto"
+                        data-parent-fit="cover"
+                        style="background-position: center {{ section.settings.image_alignment }};"></div>
+                    <noscript>
+                        <div class="home-intro__bg home-intro__bg--{{ section.id }} u-bg-cover u-bg-overlay u-bg-overlay--white"
+                        style="background-position: center {{ section.settings.image_alignment }};background-image: url('{{ section.settings.bg_image | img_url: '1400x' }});"></div>
+                    </noscript> 
+                {% else %}
+                    <div class="placeholder-svg__wrapper home-intro__bg home-intro__bg--placeholder u-bg-overlay u-bg-overlay--white">
+                        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                {% endif %}
+
+                <div class="home-intro__content">
+                    {% unless section.settings.title == blank %}
+                        <div class="section__title section__title--desc{% if block.settings.align == 'center' %} section__title--center{% endif %}">
+                            <h1 class="section__title-text">{{ section.settings.title }}</h1>
+                        </div>
+                    {% endunless %}
+                    <h4 class="home-intro__text">
+                        <div class="rte">{{ section.settings.text }}</div>
+                    </h4>
+
+                    {% unless section.settings.link == blank %}
+                        <h4 class="home-intro__text">
+                            <a href="{{ section.settings.link }}" class="overaly-link">{{ section.settings.link_title }}</a>
+                        </h4>
+                    {% endunless %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": "Image with text overlay",
+    "class": "js-section__home-intro",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "bg_image",
+            "label": "Background image",
+            "info": "1400px width recommended."
+        },
+        {
+            "type": "select",
+            "id": "image_alignment",
+            "label": "Image alignment",
+            "default": "center",
+            "options": [
+                {
+                    "value": "top",
+                    "label": "Top"
+                },
+                {
+                    "value": "center",
+                    "label": "Middle"
+                },
+                {
+                    "value": "bottom",
+                    "label": "Bottom"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Title"
+        },
+        {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Offer some insight into your brand and history. Use images, text and video to describe your value proposition.</p>"
+        },
+        {
+            "type": "text",
+            "id": "link_title",
+            "label": "Link label",
+            "default": "Learn more"
+        },
+        {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+        },
+        {
+            "type": "select",
+            "id": "section_height",
+            "label": "Section height",
+            "options": [
+                {
+                    "label": "Small",
+                    "value": "small"
+                },
+                {
+                    "label": "Medium",
+                    "value": "medium"
+                },
+                {
+                    "label": "Large",
+                    "value": "large"
+                }
+            ],
+            "default": "small"
+        },
+        {
+            "type": "color",
+            "id": "color",
+            "label": "Text color",
+            "default": "#000000"
+        }
+    ]
+}
+{% endschema %}
