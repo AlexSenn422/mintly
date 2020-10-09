@@ -1,0 +1,618 @@
+{% if section.blocks.size > 0 %}
+    {% for block in section.blocks %}     
+            {% if block.type == 'text' %}                
+                <style>
+                    .section--{{ section.id }}--{{forloop.index}} {
+                        background-color: {{ block.settings.bg_color }};
+                        margin-bottom: 0;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .container {
+                        padding-top: 30px;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .o-layout--center>.o-layout__item {
+                        vertical-align: middle;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} h1, .section--{{ section.id }}--{{forloop.index}} h2, .section--{{ section.id }}--{{forloop.index}} h3 {
+                        text-transform: unset;
+                        font-weight: 700;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .section__title-text::after {
+                        width: 0 !important;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .section__title--desc {
+                        margin-top: 12px;
+                        margin-bottom: 12px;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .section__title-text {
+                        color: {{ block.settings.title_color }};
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .home-custom__item-text {
+                        color: {{ block.settings.text_color }};
+                    }
+                </style>
+                <section class="section section--mb-s section--{{ section.id }}--{{forloop.index}}" data-section-id="{{ section.id }}--{{forloop.index}}" data-section-type="home-custom">
+                    <div class="container">
+                        <div class="home-custom__items">
+                            <div class="o-layout o-layout--center">
+                                
+                                <div class="o-layout__item u-1/1 u-1/2@tab" {% if block.settings.position == 'right' %}style="float: right;"{% endif %}>
+                                    <div class="home-custom__item">
+                                        <div class="home-custom__item-content{% if block.settings.align == 'center' %} u-text-center{% endif %}">
+                                            {% unless block.settings.title == blank %}
+                                                <div class="section__title section__title--desc{% if block.settings.align == 'center' %} section__title--center{% endif %}">
+                                                    <h1 class="section__title-text">{{ block.settings.title }}</h1>
+                                                </div>
+                                            {% endunless %}
+                                            {% unless block.settings.text == blank %}
+                                                <div class="home-custom__item-text rte">
+                                                    {{ block.settings.text }}
+                                                </div>
+                                            {% endunless %}
+                                            {% unless block.settings.first_sub_title == blank %}
+                                                <div class="section__title section__title--desc{% if block.settings.align == 'center' %} section__title--center{% endif %}">
+                                                    <h3 class="section__title-text">{{ block.settings.first_sub_title }}</h3>
+                                                </div>
+                                            {% endunless %}
+                                            {% unless block.settings.first_sub_text == blank %}
+                                                <div class="home-custom__item-text rte">
+                                                    {{ block.settings.first_sub_text }}
+                                                </div>
+                                            {% endunless %}
+                                            {% unless block.settings.second_sub_title == blank %}
+                                                <div class="section__title section__title--desc{% if block.settings.align == 'center' %} section__title--center{% endif %}">
+                                                    <h3 class="section__title-text">{{ block.settings.second_sub_title }}</h3>
+                                                </div>
+                                            {% endunless %}
+                                            {% unless block.settings.second_sub_text == blank %}
+                                                <div class="home-custom__item-text rte">
+                                                    {{ block.settings.second_sub_text }}
+                                                </div>
+                                            {% endunless %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o-layout__item u-1/1 u-1/2@tab">
+                                    <div class="home-custom__item">
+                                        <div class="home-custom__item-content home-custom__item-content--image">
+                                            {% unless block.settings.image == blank %}
+                
+                                                <div class="o-ratio o-ratio--custom" style="padding-bottom:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%;">
+                                                    <div class="o-ratio__content">
+                
+                                                        <div class="home-custom__img--cover u-bg-contain" style="background-image: url('{{ block.settings.image | img_url: '1x1' }}')"></div>
+                
+                                                        {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                                                        <img class="home-custom__img img-lazyload lazyload js"
+                                                            data-src="{{ img_url }}"
+                                                            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                                                            data-sizes="auto"
+                                                            alt="{{ block.settings.image.alt }}">
+                
+                                                    </div>
+                                                </div>
+                                                <noscript>
+                                                    {%- assign image_width = '1000x' -%}
+                                                    <img class="home-custom__img"
+                                                        src="{{ block.settings.image | img_url: image_width }}"
+                                                        alt="{{ block.settings.image.alt }}">
+                                                </noscript>
+                                            {% else %}
+                                                {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+                                                {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                                            {% endunless %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            {% elsif block.type == 'image' %}                
+                <style>
+                    .section--{{ section.id }}--{{forloop.index}} .container {
+                        padding: 0;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .u-bg-overlay::before {
+                        opacity: 0;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .section__title {
+                        max-width: 100%;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .section__title .section__title-text {
+                        text-transform: unset;
+                        font-style: italic;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .section__title-text::after {
+                        width: 0 !important;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .section__title .section__title-text, .section--{{ section.id }}--{{forloop.index}} .home-intro__text {
+                        color: {{block.settings.color}};
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .overaly-link {
+                        text-decoration: underline;
+                        margin-top: 10px;
+                    }
+                </style>
+                <section class="section section--{{ section.id }}--{{forloop.index}}" data-section-id="{{ section.id }}--{{forloop.index}}" data-section-type="home-intro">
+                    <div class="container">
+                        
+                        <div class="u-flex-parent">
+                            <div class="home-intro home-intro--{{ block.settings.section_height }} u-flex u-flex--middle">
+                
+                                {% if block.settings.bg_image != blank %}
+                                    <div class="home-intro__bg--cover u-bg-contain u-bg-overlay u-bg-overlay--white" style="background-image: url('{{ block.settings.bg_image | img_url: '1x1' }}')"></div>
+                                    <div class="home-intro__bg home-intro__bg--{{ section.id }} u-bg-cover u-bg-overlay u-bg-overlay--white img-lazyload lazyload js"
+                                        data-bgset="{% render 'bgset', image: block.settings.bg_image %}"
+                                        data-sizes="auto"
+                                        data-parent-fit="cover"
+                                        style="background-position: center {{ block.settings.image_alignment }};"></div>
+                                    <noscript>
+                                        <div class="home-intro__bg home-intro__bg--{{ section.id }} u-bg-cover u-bg-overlay u-bg-overlay--white"
+                                        style="background-position: center {{ block.settings.image_alignment }};background-image: url('{{ block.settings.bg_image | img_url: '1400x' }});"></div>
+                                    </noscript> 
+                                {% else %}
+                                    <div class="placeholder-svg__wrapper home-intro__bg home-intro__bg--placeholder u-bg-overlay u-bg-overlay--white">
+                                        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                                    </div>
+                                {% endif %}
+                
+                                <div class="home-intro__content">
+                                    {% unless block.settings.title == blank %}
+                                        <div class="section__title section__title--desc{% if block.settings.align == 'center' %} section__title--center{% endif %}">
+                                            <h1 class="section__title-text">{{ block.settings.title }}</h1>
+                                        </div>
+                                    {% endunless %}
+                                    <h4 class="home-intro__text">
+                                        <div class="rte">{{ block.settings.text }}</div>
+                                    </h4>
+                
+                                    {% unless block.settings.link == blank %}
+                                        <h4 class="home-intro__text">
+                                            <a href="{{ block.settings.link }}" class="overaly-link">{{ block.settings.link_title }}</a>
+                                        </h4>
+                                    {% endunless %}
+                                </div>
+                
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            {% elsif block.type == 'grid' %}
+                <style>
+                    .section--{{ section.id }}--{{forloop.index}} .u-bg-overlay::before {
+                        opacity: 0;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .home-image-grid__title, .section--{{ section.id }}--{{forloop.index}} .home-image-grid__desc {
+                        color: {{block.settings.color}};
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .o-layout {
+                        display: flex;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .o-layout .right-image {
+                        height: 100%;
+                    }
+                    .section--{{ section.id }}--{{forloop.index}} .image-collection-button {
+                        color: {{block.settings.color}};
+                        background-color: #ffffff;
+                        border: 1px solid #000000;
+                        border-radius: 20px;
+                        padding: 0 15px;
+                    }
+                </style>
+                <section class="section section--mb-s section--{{ section.id }}--{{forloop.index}}" data-section-id="{{ section.id }}--{{forloop.index}}" data-section-type="home-image-grid">
+                    <div class="home-image-grid home-image-grid--{{ block.settings.height }}">
+                        <div class="container">
+                            <div class="home-image-grid__items">
+                                <div class="o-layout">
+                                    {%- assign grid_item_width = '1/2' -%}
+                                    <div class="o-layout__item u-1/1 u-{{ grid_item_width }}@tab">
+                                        <div class="u-flex-parent right-image">
+                                            <div class="home-image-grid__item home-image-grid__item--image">
+                                                {% if block.settings.left_image %}
+                                                <div class="home-image-grid__bg--cover u-bg-contain u-bg-overlay" style="background-image: url('{{ block.settings.image | img_url: '1x1' }}')"></div>
+                                                {% endif %}
+                                                <div class="home-image-grid__bg home-image-grid__bg--{{ section.id }} u-bg-cover u-bg-overlay u-bg-overlay--light img-lazyload lazyload js"
+                                                    data-bgset="{% render 'bgset', image: block.settings.left_image %}"
+                                                    data-sizes="auto"
+                                                    data-parent-fit="cover"
+                                                    {% if block.settings.left_image %}
+                                                    style="background-position: center {{ block.settings.left_image_alignment }};"
+                                                    {% endif %}>
+                                                    {% if block.settings.left_image == blank %}
+                                                        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                                                        {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                                                    {% endif %}
+                                                </div>
+                                                <noscript>
+                                                    {% case grid_item_width %}
+                                                        {% when '1/1' %}
+                                                            {%- assign image_width = '1400x' -%}
+                                                        {% when '2/3' %}
+                                                            {%- assign image_width = '1000x' -%}
+                                                        {% when '1/2' %}
+                                                            {%- assign image_width = '900x' -%}
+                                                        {% when '1/3' %}
+                                                            {%- assign image_width = '800x' -%}
+                                                    {% endcase %}
+                                                    <div class="home-image-grid__bg home-image-grid__bg--{{ section.id }} u-bg-cover u-bg-overlay u-bg-overlay--light" 
+                                                        {% if block.settings.left_image %}
+                                                        style="background-position: center {{ block.settings.left_image_alignment }}; background-image: url('{{ block.settings.left_image | img_url: image_width }});"
+                                                        {% endif %}>
+                                                    </div> 
+                                                    {% if block.settings.left_image == blank %}
+                                                        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                                                        {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                                                    {% endif %}
+                                                </noscript> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="o-layout__item u-1/1 u-{{ grid_item_width }}@tab">
+                                        <div class="u-flex-parent">
+                                            <div class="home-image-grid__item home-image-grid__item--image">
+                                                {% if block.settings.right_image %}
+                                                <div class="home-image-grid__bg--cover u-bg-contain u-bg-overlay" style="background-image: url('{{ block.settings.image | img_url: '1x1' }}')"></div>
+                                                {% endif %}
+                                                <div class="home-image-grid__bg home-image-grid__bg--{{ section.id }} u-bg-cover u-bg-overlay u-bg-overlay--light img-lazyload lazyload js"
+                                                    data-bgset="{% render 'bgset', image: block.settings.right_image %}"
+                                                    data-sizes="auto"
+                                                    data-parent-fit="cover"
+                                                    {% if block.settings.right_image %}
+                                                    style="background-position: center {{ block.settings.right_image_alignment }};"
+                                                    {% endif %}>
+                                                    {% if block.settings.right_image == blank %}
+                                                        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                                                        {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                                                    {% endif %}
+                                                </div>
+                                                <noscript>
+                                                    {% case grid_item_width %}
+                                                        {% when '1/1' %}
+                                                            {%- assign image_width = '1400x' -%}
+                                                        {% when '2/3' %}
+                                                            {%- assign image_width = '1000x' -%}
+                                                        {% when '1/2' %}
+                                                            {%- assign image_width = '900x' -%}
+                                                        {% when '1/3' %}
+                                                            {%- assign image_width = '800x' -%}
+                                                    {% endcase %}
+                                                    <div class="home-image-grid__bg home-image-grid__bg--{{ section.id }} u-bg-cover u-bg-overlay u-bg-overlay--light" 
+                                                        {% if block.settings.right_image %}
+                                                        style="background-position: center {{ block.settings.right_image_alignment }}; background-image: url('{{ block.settings.right_image | img_url: image_width }});"
+                                                        {% endif %}>
+                                                    </div> 
+                                                    {% if block.settings.right_image == blank %}
+                                                        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                                                        {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                                                    {% endif %}
+                                                </noscript>
+                                            </div>
+                                        </div>
+                                        <div class="image-collection-text">
+                                            <div class="home-image-grid__content">
+                                                {% unless block.settings.title == blank %}
+                                                    <h3 class="home-image-grid__title h2">{{ block.settings.title }}</h3>
+                                                {% endunless %}
+                                                {% unless block.settings.text == blank %}
+                                                    <p class="home-image-grid__desc">{{ block.settings.text | escape }}</p>
+                                                {% endunless %}
+                                                {% unless block.settings.link == blank %}
+                                                    <a href="{{ block.settings.link }}" class="c-btn c-btn--primary home-image-grid__btn image-collection-button">{{ block.settings.link_title }}</a>
+                                                {% endunless %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if section.blocks.size != 0 %}
+    <style>
+        .main {
+            margin-top: 0;
+        }
+    </style>
+{% endif %}
+
+{% schema %}
+{
+    "name": "Custom module",
+    "class": "js-section__home-custom",
+    "max_blocks": 12,
+    "settings": [
+    ],
+    "blocks": [
+        {
+            "type": "text",
+            "name": "Text with Image",
+            "settings":[
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Heading",
+                    "default": "Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "text",
+                    "label": "Text",
+                    "default": "<p>Promote your brand by using a powerful combination of buttons, custom text, page content and images.</p>"
+                },
+                {
+                    "type": "text",
+                    "id": "first_sub_title",
+                    "label": "First Sub Title",
+                    "default": "Sub Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "first_sub_text",
+                    "label": "Text",
+                    "default": "<p>Promote your brand by using a powerful combination of buttons, custom text, page content and images.</p>"
+                },
+                {
+                    "type": "text",
+                    "id": "second_sub_title",
+                    "label": "Second Sub Title",
+                    "default": "Sub Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "second_sub_text",
+                    "label": "Text",
+                    "default": "<p>Promote your brand by using a powerful combination of buttons, custom text, page content and images.</p>"
+                },
+                {
+                    "type": "select",
+                    "id": "align",
+                    "label": "Text alignment",
+                    "default": "left",
+                    "options": [
+                        {
+                            "label": "Center",
+                            "value": "center"
+                        },
+                        {
+                            "label": "Left",
+                            "value": "left"
+                        }
+                    ]
+                },
+                {
+                    "type": "color",
+                    "id": "bg_color",
+                    "label": "Background color",
+                    "default": "#f0f0f0"
+                },
+                {
+                    "type": "color",
+                    "id": "title_color",
+                    "label": "Title color",
+                    "default": "#000000"
+                },
+                {
+                    "type": "color",
+                    "id": "text_color",
+                    "label": "Text color",
+                    "default": "#000000"
+                },
+                {
+                    "type": "select",
+                    "id": "position",
+                    "label": "Text Position",
+                    "default": "left",
+                    "options": [
+                        {
+                            "label": "Right",
+                            "value": "right"
+                        },
+                        {
+                            "label": "Left",
+                            "value": "left"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "image",
+            "name": "Image with text overlay",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "bg_image",
+                    "label": "Background image",
+                    "info": "1400px width recommended."
+                },
+                {
+                    "type": "select",
+                    "id": "image_alignment",
+                    "label": "Image alignment",
+                    "default": "center",
+                    "options": [
+                        {
+                            "value": "top",
+                            "label": "Top"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Middle"
+                        },
+                        {
+                            "value": "bottom",
+                            "label": "Bottom"
+                        }
+                    ]
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Heading",
+                    "default": "Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "text",
+                    "label": "Text",
+                    "default": "<p>Offer some insight into your brand and history. Use images, text and video to describe your value proposition.</p>"
+                },
+                {
+                    "type": "text",
+                    "id": "link_title",
+                    "label": "Link label",
+                    "default": "Learn more"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link"
+                },
+                {
+                    "type": "select",
+                    "id": "section_height",
+                    "label": "Section height",
+                    "options": [
+                        {
+                            "label": "Small",
+                            "value": "small"
+                        },
+                        {
+                            "label": "Medium",
+                            "value": "medium"
+                        },
+                        {
+                            "label": "Large",
+                            "value": "large"
+                        }
+                    ],
+                    "default": "small"
+                },
+                {
+                    "type": "color",
+                    "id": "color",
+                    "label": "Text color",
+                    "default": "#000000"
+                }
+            ]
+        },
+        {
+            "type": "grid",
+            "name": "Image grid with text",
+            "settings": [
+                {
+                    "type": "select",
+                    "id": "height",
+                    "label": "Section height",
+                    "default": "medium",
+                    "options": [
+                        {
+                            "label": "Small",
+                            "value": "small"
+                        },
+                        {
+                            "label": "Medium",
+                            "value": "medium"
+                        },
+                        {
+                            "label": "Large",
+                            "value": "large"
+                        }
+                    ]
+                },
+                {
+                    "type": "image_picker",
+                    "id": "left_image",
+                    "label": "Left Image",
+                    "info": "1400px width recommended."
+                },
+                {
+                    "type": "select",
+                    "id": "left_image_alignment",
+                    "label": "Left Image alignment",
+                    "default": "center",
+                    "options": [
+                        {
+                            "value": "top",
+                            "label": "Top"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Middle"
+                        },
+                        {
+                            "value": "bottom",
+                            "label": "Bottom"
+                        }
+                    ]
+                },
+                {
+                    "type": "image_picker",
+                    "id": "right_image",
+                    "label": "Right Image",
+                    "info": "1400px width recommended."
+                },
+                {
+                    "type": "select",
+                    "id": "right_image_alignment",
+                    "label": "Right Image alignment",
+                    "default": "center",
+                    "options": [
+                        {
+                            "value": "top",
+                            "label": "Top"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Middle"
+                        },
+                        {
+                            "value": "bottom",
+                            "label": "Bottom"
+                        }
+                    ]
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Heading",
+                    "default": "Image block"
+                },
+                {
+                    "type": "textarea",
+                    "id": "text",
+                    "label": "Text",
+                    "default": "Use these image blocks to tell your story, promote your products or create a beautiful gallery."
+                },
+                {
+                    "type": "text",
+                    "id": "link_title",
+                    "label": "Button label",
+                    "default": "Learn more"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link"
+                },
+                {
+                    "type": "color",
+                    "id": "color",
+                    "label": "Text color",
+                    "default": "#000000"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
